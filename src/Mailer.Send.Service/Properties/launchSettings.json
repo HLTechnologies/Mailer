@@ -1,0 +1,13 @@
+{
+  "profiles": {
+    "Mailer.Send.Service": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      }
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}

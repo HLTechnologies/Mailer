@@ -1,0 +1,31 @@
+version: '3.4'
+
+services:
+  rabbitmq:
+    container_name: rabbitmqMailer
+    hostname: rabbitmqMailer
+    image: rabbitmq:3-management
+    volumes:
+      - ./.dockerVolumes/RabbitMq/data:/var/lib/rabbitmq/mnesia
+    ports:
+      - "15672:15672"
+      - "5672:5672" 
+    networks:
+      - mailer
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin
+#      RABBITMQ_DEFAULT_VHOST: MailerHost
+
+  mailer.send.service:
+    image: ${DOCKER_REGISTRY-}mailersendservice
+    build:
+      context: .
+      dockerfile: src/Mailer.Send.Service/Dockerfile
+    networks:
+      - mailer
+    depends_on:
+      - rabbitmq
+networks:
+  mailer:
+    driver: bridge
